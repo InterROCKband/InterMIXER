@@ -44,6 +44,45 @@
           "volume": 0.85
         }
       ]
+    },
+    {
+      "id": "ready-for-love-msgbgpxi",
+      "title": "Ready for Love",
+      "artist": "Bad Company",
+      "notes": "Versão meio tom abaixo (G#m) - 64bpm",
+      "createdAt": "2026-08-05T16:44:20.637Z",
+      "tracks": [
+        {
+          "name": "Metronomo",
+          "file": "audio/ready-for-love/01-metronomo.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Bateria",
+          "file": "audio/ready-for-love/02-bateria.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Baixo",
+          "file": "audio/ready-for-love/03-baixo.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Guitarra",
+          "file": "audio/ready-for-love/04-guitarra.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Teclado",
+          "file": "audio/ready-for-love/05-teclado.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Vocal",
+          "file": "audio/ready-for-love/06-vocal.mp3",
+          "volume": 0.85
+        }
+      ]
     }
   ]
 }
