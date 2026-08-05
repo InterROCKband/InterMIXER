@@ -1,4 +1,49 @@
 {
   "version": 1,
-  "songs": []
+  "songs": [
+    {
+      "id": "lock-n-load-msgavo4q",
+      "title": "Lock 'n' Load",
+      "artist": "The Dead Daisies",
+      "notes": "Versão meio tom abaixo (Abm) - 76bpm",
+      "createdAt": "2026-08-05T16:28:06.107Z",
+      "tracks": [
+        {
+          "name": "Metronomo",
+          "file": "audio/lock-n-load/01-metronomo.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Bateria",
+          "file": "audio/lock-n-load/02-bateria.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Baixo",
+          "file": "audio/lock-n-load/03-baixo.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Guitarra Solo",
+          "file": "audio/lock-n-load/04-guitarra-solo.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Guitarra Base",
+          "file": "audio/lock-n-load/05-guitarra-base.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Vocal",
+          "file": "audio/lock-n-load/06-vocal.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Outro",
+          "file": "audio/lock-n-load/07-outro.mp3",
+          "volume": 0.85
+        }
+      ]
+    }
+  ]
 }
