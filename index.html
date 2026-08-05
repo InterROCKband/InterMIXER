@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f1216">
+<title>BandTracks — Pistas</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- ================= TOPO ================= -->
+<header class="topbar">
+  <button class="hamburger" id="hamburger" aria-label="Abrir lista de músicas">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="brand"><span class="dot"></span><span id="bandName">BandTracks</span></div>
+  <div class="spacer"></div>
+  <a class="link" href="admin.html">Administrador</a>
+</header>
+
+<!-- ================= LISTA DE MÚSICAS ================= -->
+<aside class="sidebar" id="sidebar">
+  <h2>Repertório</h2>
+  <div class="search"><input id="search" type="search" placeholder="Buscar música..." autocomplete="off"></div>
+  <nav class="songlist" id="songlist"></nav>
+  <div class="sidebar-foot" id="trackCount"></div>
+</aside>
+<div class="backdrop" id="backdrop"></div>
+
+<!-- ================= MIXER ================= -->
+<main class="main" id="main"></main>
+
+<!-- ================= TRANSPORTE ================= -->
+<footer class="transport">
+  <div class="loading"><div class="b" id="loadBar"></div></div>
+
+  <!-- linha 1: barra de tempo da música -->
+  <div class="tp-row row-seek">
+    <div class="seek" id="seek" role="slider" aria-label="Posição da música">
+      <div class="rail"><div class="fill" id="seekFill"></div></div>
+      <div class="knob" id="seekKnob"></div>
+    </div>
+    <div class="time">
+      <span id="tCur">0:00</span><span class="sep">/</span><span class="tot" id="tTot">0:00</span>
+    </div>
+  </div>
+
+  <!-- linha 2: transporte + velocidade + volume geral -->
+  <div class="tp-row row-ctrl">
+    <button class="playbtn" id="playBtn" aria-label="Tocar"></button>
+    <button class="iconbtn" id="resetBtn" title="Voltar ao início">
+      <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+    </button>
+    <button class="iconbtn" id="stopBtn" title="Parar">
+      <svg viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></svg>
+    </button>
+
+    <!-- ---- controle de velocidade ---- -->
+    <div class="speed-wrap">
+      <button class="speed-btn" id="speedBtn" aria-haspopup="true" aria-expanded="false"
+              title="Velocidade de reprodução">
+        <svg viewBox="0 0 24 24"><path d="M12 4a8 8 0 00-8 8 8 8 0 001.5 4.6l1.6-1.2A6 6 0 016 12a6 6 0 016-6 6 6 0 016 6 6 6 0 01-1.1 3.4l1.6 1.2A8 8 0 0020 12a8 8 0 00-8-8zm3.2 4.4l-4.6 3.1a1.7 1.7 0 102 2.5l3.2-4.5a.5.5 0 00-.6-1.1z"/></svg>
+        <span class="lbl">Velocidade</span>
+        <span class="val" id="speedVal">1,00×</span>
+      </button>
+
+      <div class="speed-pop" id="speedPop" role="dialog" aria-label="Velocidade de reprodução">
+        <h4>Velocidades rápidas</h4>
+        <div class="speed-presets" id="speedPresets"></div>
+
+        <h4>Ajuste fino</h4>
+        <div class="speed-fine">
+          <input type="range" id="speedRange" min="25" max="100" step="5" value="100" aria-label="Velocidade">
+          <span class="num" id="speedNum">1,00×</span>
+        </div>
+        <div class="speed-scale">
+          <span id="speedMin">0,25×</span><span id="speedMax">1,00×</span>
+        </div>
+
+        <label class="speed-opt">
+          <input type="checkbox" id="pitchChk" checked>
+          <span>
+            <b>Manter o tom original</b>
+            <span id="pitchLabel">Desmarque para o efeito de fita: o tom desce junto com a velocidade.</span>
+          </span>
+        </label>
+
+        <div class="speed-note" id="speedNote">
+          Abaixo de 0,50× alguns navegadores reduzem ou cortam o áudio, e os
+          artefatos do processamento ficam audíveis. Se ficar mudo, suba para 0,50×.
+        </div>
+
+        <button class="speed-reset" id="speedReset" type="button">Voltar para 1,00×</button>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="master">
+      <svg class="spk" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 00-2.5-4v8a4.5 4.5 0 002.5-4zM14 3.2v2.1c2.9.9 5 3.5 5 6.7s-2.1 5.8-5 6.7v2.1c4-1 7-4.6 7-8.8s-3-7.8-7-8.8z"/></svg>
+      <label for="masterVol">Geral</label>
+      <input type="range" id="masterVol" min="0" max="100" value="100" style="--fill:100%">
+    </div>
+  </div>
+</footer>
+
+<script src="config.js"></script>
+<script src="assets/js/engine.js"></script>
+<script src="assets/js/player.js"></script>
+</body>
+</html>

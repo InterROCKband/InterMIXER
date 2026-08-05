@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f1216">
+<title>Administrador — BandTracks</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="adm-body">
+
+<!-- ================= LOGIN ================= -->
+<div class="login-screen" id="loginScreen">
+  <form class="login-box" id="loginForm">
+    <h2>Área do administrador</h2>
+    <p>Acesso restrito. Usuários comuns não precisam entrar aqui.</p>
+    <div class="field">
+      <label for="loginUser">Usuário</label>
+      <input id="loginUser" type="text" autocomplete="username" value="admin">
+    </div>
+    <div class="field">
+      <label for="loginPass">Senha</label>
+      <input id="loginPass" type="password" autocomplete="current-password">
+    </div>
+    <button class="btn" type="submit" style="width:100%">Entrar</button>
+    <div class="err-msg" id="loginErr"></div>
+    <div style="margin-top:14px;display:flex;justify-content:space-between;font-size:12px">
+      <a href="index.html">&larr; Voltar ao player</a>
+      <button type="button" id="hashGen" style="color:var(--txt-2);font-size:12px">Gerar hash de senha</button>
+    </div>
+  </form>
+</div>
+
+<!-- ================= APLICAÇÃO ================= -->
+<div id="adminApp" style="display:none">
+
+  <header class="topbar">
+    <div class="brand"><span class="dot"></span><span id="admBandName">BandTracks</span> · Admin</div>
+    <div class="spacer"></div>
+    <a class="link" href="index.html">Player</a>
+    <button class="link" id="logoutBtn">Sair</button>
+  </header>
+
+  <div class="adm-wrap">
+
+    <!-- ---- Conexão ---- -->
+    <section class="card">
+      <h3>1. Conexão com o GitHub <span class="badge off" id="ghStatus">desconectado</span></h3>
+      <p class="hint" id="ghStatusMsg">
+        Informe um <b>Personal Access Token</b> (fine-grained) com permissão
+        <i>Contents: Read and write</i> no repositório. O token fica apenas neste navegador.
+      </p>
+      <div class="grid2">
+        <div class="field"><label for="ghOwner">Usuário / organização</label><input id="ghOwner" type="text" placeholder="seu-usuario"></div>
+        <div class="field"><label for="ghRepo">Repositório</label><input id="ghRepo" type="text" placeholder="bandtracks"></div>
+        <div class="field"><label for="ghBranch">Branch</label><input id="ghBranch" type="text" value="main"></div>
+        <div class="field"><label for="ghToken">Token</label><input id="ghToken" type="password" placeholder="github_pat_..." autocomplete="off"></div>
+      </div>
+      <div class="row-actions">
+        <button class="btn" id="btnConnect">Conectar</button>
+        <button class="btn ghost" id="btnForget">Esquecer token</button>
+        <label style="font-size:12.5px;color:var(--txt-2);display:flex;align-items:center;gap:6px">
+          <input type="checkbox" id="rememberToken" checked> lembrar neste dispositivo
+        </label>
+      </div>
+    </section>
+
+    <!-- ---- Nova música ---- -->
+    <section class="card">
+      <h3>2. Nova música</h3>
+      <p class="hint">Defina o nome, a quantidade de pistas e envie um arquivo de áudio para cada uma.</p>
+
+      <div class="grid2">
+        <div class="field"><label for="sTitle">Música *</label><input id="sTitle" type="text" placeholder="Ex.: Garota de Ipanema"></div>
+        <div class="field"><label for="sArtist">Artista / autor</label><input id="sArtist" type="text" placeholder="Ex.: Tom Jobim"></div>
+      </div>
+      <div class="field"><label for="sNotes">Observação (opcional)</label><input id="sNotes" type="text" placeholder="Ex.: tom de Ré, 120 bpm"></div>
+
+      <div class="row-actions" style="margin:6px 0 14px">
+        <div class="field" style="margin:0;width:120px">
+          <label for="nTracks">Nº de pistas</label>
+          <input id="nTracks" type="number" min="1" max="24" value="3">
+        </div>
+        <button class="btn ghost" id="btnSetTracks">Gerar campos</button>
+        <button class="btn ghost" id="btnAddTrack">+ pista</button>
+      </div>
+
+      <div id="trackRows"></div>
+
+      <div class="row-actions" style="margin-top:16px">
+        <button class="btn" id="btnPublish" disabled>Publicar no GitHub</button>
+      </div>
+      <div class="progress"><b id="pubBar"></b></div>
+    </section>
+
+    <!-- ---- Músicas publicadas ---- -->
+    <section class="card">
+      <h3>3. Músicas publicadas</h3>
+      <p class="hint">Excluir remove os arquivos de áudio e a entrada do catálogo.</p>
+      <div id="songAdmin"></div>
+    </section>
+
+    <!-- ---- Registro ---- -->
+    <section class="card">
+      <h3>Registro de operações</h3>
+      <div class="log" id="log"></div>
+    </section>
+
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="assets/js/github.js"></script>
+<script src="assets/js/admin.js"></script>
+</body>
+</html>
