@@ -83,6 +83,50 @@
           "volume": 0.85
         }
       ]
+    },
+    {
+      "id": "no-more-tears-msglz751",
+      "title": "No More Tears",
+      "artist": "Ozzy Osborne",
+      "notes": "C#m - 103 bpm",
+      "createdAt": "2026-08-05T21:38:56.083Z",
+      "tracks": [
+        {
+          "name": "Metronomo",
+          "file": "audio/no-more-tears/01-metronomo.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Bateria",
+          "file": "audio/no-more-tears/02-bateria.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Baixo",
+          "file": "audio/no-more-tears/03-baixo.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Guitarra",
+          "file": "audio/no-more-tears/04-guitarra.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Teclado",
+          "file": "audio/no-more-tears/05-teclado.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Vocal",
+          "file": "audio/no-more-tears/06-vocal.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Outros",
+          "file": "audio/no-more-tears/07-outros.mp3",
+          "volume": 0.85
+        }
+      ]
     }
   ]
 }
