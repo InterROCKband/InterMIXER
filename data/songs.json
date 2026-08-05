@@ -11,7 +11,7 @@
         {
           "name": "Metronomo",
           "file": "audio/lock-n-load/01-metronomo.mp3",
-          "volume": 0.85
+          "volume": 0.35
         },
         {
           "name": "Bateria",
@@ -55,7 +55,7 @@
         {
           "name": "Metronomo",
           "file": "audio/ready-for-love/01-metronomo.mp3",
-          "volume": 0.85
+          "volume": 0.35
         },
         {
           "name": "Bateria",
