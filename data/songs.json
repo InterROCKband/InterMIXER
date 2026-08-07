@@ -127,6 +127,50 @@
           "volume": 0.85
         }
       ]
+    },
+    {
+      "id": "separate-ways-worlds-apart-msjesa3i",
+      "title": "Separate Ways (Worlds Apart)",
+      "artist": "Journey",
+      "notes": "Versão meio tom abaixo (Ebm) - 132bpm",
+      "createdAt": "2026-08-07T20:40:43.745Z",
+      "tracks": [
+        {
+          "name": "Metronomo",
+          "file": "audio/separate-ways-worlds-apart/01-metronomo.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Bateria",
+          "file": "audio/separate-ways-worlds-apart/02-bateria.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Baixo",
+          "file": "audio/separate-ways-worlds-apart/03-baixo.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Guitarra",
+          "file": "audio/separate-ways-worlds-apart/04-guitarra.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Teclado",
+          "file": "audio/separate-ways-worlds-apart/05-teclado.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Vocais",
+          "file": "audio/separate-ways-worlds-apart/06-vocais.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Outro",
+          "file": "audio/separate-ways-worlds-apart/07-outro.mp3",
+          "volume": 0.85
+        }
+      ]
     }
   ]
 }
