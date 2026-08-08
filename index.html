@@ -11,9 +11,7 @@
 
 <!-- ================= TOPO ================= -->
 <header class="topbar">
-  <button class="hamburger" id="hamburger" aria-label="Abrir lista de músicas">
-    <span></span><span></span><span></span>
-  </button>
+  <button class="hamburger" id="hamburger" aria-label="Abrir lista de músicas"><span></span><span></span><span></span></button>
   <div class="brand"><span class="dot"></span><span id="bandName">BandTracks</span></div>
   <div class="spacer"></div>
   <a class="link" href="admin.html">Administrador</a>
@@ -35,62 +33,74 @@
 <footer class="transport">
   <div class="loading"><div class="b" id="loadBar"></div></div>
 
-  <!-- linha 1: barra de tempo da música -->
+  <!-- linha 1: barra de tempo (com marcadores de loop) -->
   <div class="tp-row row-seek">
     <div class="seek" id="seek" role="slider" aria-label="Posição da música">
-      <div class="rail"><div class="fill" id="seekFill"></div></div>
+      <div class="rail">
+        <div class="fill" id="seekFill"></div>
+      </div>
+      <div class="dim left"  id="dimLeft"></div>
+      <div class="dim right" id="dimRight"></div>
+      <div class="loopband"  id="loopBand"></div>
       <div class="knob" id="seekKnob"></div>
+      <div class="handle start" id="hStart" role="slider" aria-label="Início do loop"></div>
+      <div class="handle end"   id="hEnd"   role="slider" aria-label="Fim do loop"></div>
     </div>
     <div class="time">
       <span id="tCur">0:00</span><span class="sep">/</span><span class="tot" id="tTot">0:00</span>
     </div>
   </div>
 
-  <!-- linha 2: transporte + velocidade + volume geral -->
+  <!-- linha 2: transporte + loop + velocidade + volume geral -->
   <div class="tp-row row-ctrl">
     <button class="playbtn" id="playBtn" aria-label="Tocar"></button>
-    <button class="iconbtn" id="resetBtn" title="Voltar ao início">
+    <button class="iconbtn" id="resetBtn" title="Voltar ao início do trecho">
       <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
     </button>
     <button class="iconbtn" id="stopBtn" title="Parar">
       <svg viewBox="0 0 24 24"><path d="M6 6h12v12H6z"/></svg>
     </button>
 
-    <!-- ---- controle de velocidade ---- -->
+    <!-- ---- LOOP ---- -->
+    <div class="loop-group">
+      <button class="loop-btn" id="loopBtn" aria-pressed="false" title="Ativar loop de trecho (tecla L)">
+        <svg viewBox="0 0 24 24"><path d="M7 7h8v2.5L19 6l-4-3.5V5H7a5 5 0 00-5 5 5 5 0 001 3l1.6-1.5A3 3 0 015 10a3 3 0 013-3zm10 4l-1.6 1.5A3 3 0 0119 14a3 3 0 01-3 3H8v-2.5L4 18l4 3.5V19h8a5 5 0 005-5 5 5 0 00-1-3z"/></svg>
+        <span class="lbl">Loop</span>
+      </button>
+      <div class="loop-times" id="loopTimes">
+        <span class="lbl">Trecho</span>
+        <span class="lp-a" id="lpA">0:00.0</span>
+        <span class="arw">→</span>
+        <span class="lp-b" id="lpB">0:00.0</span>
+      </div>
+      <button class="loop-reset" id="loopReset" title="Restaurar trecho para a música inteira">
+        <svg viewBox="0 0 24 24"><path d="M12 5V2L8 6l4 4V7a5 5 0 11-5 5H5a7 7 0 107-7z"/></svg>
+      </button>
+    </div>
+
+    <!-- ---- velocidade ---- -->
     <div class="speed-wrap">
-      <button class="speed-btn" id="speedBtn" aria-haspopup="true" aria-expanded="false"
-              title="Velocidade de reprodução">
+      <button class="speed-btn" id="speedBtn" aria-haspopup="true" aria-expanded="false" title="Velocidade de reprodução">
         <svg viewBox="0 0 24 24"><path d="M12 4a8 8 0 00-8 8 8 8 0 001.5 4.6l1.6-1.2A6 6 0 016 12a6 6 0 016-6 6 6 0 016 6 6 6 0 01-1.1 3.4l1.6 1.2A8 8 0 0020 12a8 8 0 00-8-8zm3.2 4.4l-4.6 3.1a1.7 1.7 0 102 2.5l3.2-4.5a.5.5 0 00-.6-1.1z"/></svg>
         <span class="lbl">Velocidade</span>
         <span class="val" id="speedVal">1,00×</span>
       </button>
-
       <div class="speed-pop" id="speedPop" role="dialog" aria-label="Velocidade de reprodução">
         <h4>Velocidades rápidas</h4>
         <div class="speed-presets" id="speedPresets"></div>
-
         <h4>Ajuste fino</h4>
         <div class="speed-fine">
           <input type="range" id="speedRange" min="25" max="100" step="5" value="100" aria-label="Velocidade">
           <span class="num" id="speedNum">1,00×</span>
         </div>
-        <div class="speed-scale">
-          <span id="speedMin">0,25×</span><span id="speedMax">1,00×</span>
-        </div>
-
+        <div class="speed-scale"><span id="speedMin">0,25×</span><span id="speedMax">1,00×</span></div>
         <label class="speed-opt">
           <input type="checkbox" id="pitchChk" checked>
-          <span>
-            <b>Manter o tom original</b>
-            <span id="pitchLabel">Desmarque para o efeito de fita: o tom desce junto com a velocidade.</span>
-          </span>
+          <span><b>Manter o tom original</b><span id="pitchLabel">Desmarque para o efeito de fita: o tom desce junto com a velocidade.</span></span>
         </label>
-
         <div class="speed-note" id="speedNote">
-          Abaixo de 0,50× alguns navegadores reduzem ou cortam o áudio, e os
-          artefatos do processamento ficam audíveis. Se ficar mudo, suba para 0,50×.
+          Abaixo de 0,50× alguns navegadores reduzem ou cortam o áudio. Se ficar mudo, suba para 0,50×.
         </div>
-
         <button class="speed-reset" id="speedReset" type="button">Voltar para 1,00×</button>
       </div>
     </div>
