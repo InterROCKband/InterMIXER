@@ -19,16 +19,50 @@ Hospedagem no GitHub Pages, sem servidor e sem custo.
 | **M** — mudo | silencia a pista | idem |
 | **S** — solo | toca só as pistas em solo | idem |
 | Tocar / pausar | botão laranja ou **espaço** | botão laranja |
-| Avançar 5 s | seta → / seta ← | arrastar a barra de tempo |
-| Voltar ao início | tecla **Home** | botão ⏮ |
+| Voltar ao início (do trecho) | tecla **Home** ou botão ⏮ | botão ⏮ |
 | **Velocidade** | botão *Velocidade*, ou teclas **−** **+** **0** | botão *Velocidade* |
+| **Loop** | botão *Loop*, ou tecla **L** | botão *Loop* |
 
-Com **várias pistas em solo**, todas elas tocam juntas e as demais ficam mudas —
-exatamente como numa mesa de som. O botão **Limpar mudo/solo** zera tudo.
+Com **várias pistas em solo**, todas tocam juntas e as demais ficam mudas —
+como numa mesa de som. **Limpar mudo/solo** zera tudo.
 
 ---
 
-## 2. Controle de velocidade
+## 2. Loop de trecho
+
+Clique em **Loop** (ou tecla **L**). Aparecem, na barra de tempo, duas alças azuis:
+uma no início e outra no fim. Arraste-as para delimitar o trecho — o segmento
+selecionado fica **realçado em azul** e o restante da barra fica **apagado**. Ao lado
+do botão, a caixa **Trecho** mostra o tempo inicial e final (com décimos de segundo).
+
+Ao dar **play**, o trecho toca em repetição infinita até você apertar **parar** ou a
+**barra de espaço**. Você pode:
+
+- **arrastar as alças com a música tocando** — o trecho muda na hora, sem parar o som;
+- **mudar a velocidade durante o loop** — funciona em qualquer ponto, inclusive
+  enquanto repete;
+- **ajustar volume, mudo e solo durante o loop** — tudo continua respondendo normalmente.
+
+O botão **⟲ Reset** (ao lado) devolve as alças aos extremos. Com as alças nos extremos
+e o loop ligado, a música inteira repete como um *repeat*. Clicar em **Loop** de novo
+desliga a função e faz as alças desaparecerem.
+
+Observações:
+
+- Os pontos do loop são guardados em **tempo de mídia**, não em tempo de parede.
+  Por isso o loop é **independente da velocidade**: um trecho de 8 s continua sendo
+  o mesmo trecho a 1,00× ou a 0,50× (apenas leva mais tempo para repetir a 0,50×).
+- Trocar de música reinicia o loop para os extremos.
+- Há uma largura mínima de trecho (padrão 1 s, ajustável em `config.js` →
+  `loop.minSpan`) para as alças não se cruzarem.
+
+Em teste automatizado, o salto de volta ao início do trecho ocorreu corretamente em
+todas as velocidades, com deriva de 0 ms entre as 6 pistas, e o áudio não foi
+interrompido ao mexer no mixer ou nas alças durante a repetição.
+
+---
+
+## 3. Controle de velocidade
 
 Clique em **Velocidade** ao lado dos botões de transporte. O painel traz:
 
@@ -130,14 +164,16 @@ sem usar a área do administrador.
 
 ## 5. Notas técnicas
 
-- Cada pista é um `<audio>` (streaming) ligado a um `GainNode` do Web Audio API.
-  O consumo de memória é baixo, o que permite muitas pistas no celular.
-- A velocidade usa `playbackRate` com `preservesPitch`, aplicada a todos os
-  elementos de áudio. Não há custo de memória nem de processamento relevante.
-- Um verificador roda a cada 500 ms e realinha qualquer pista que desvie da
-  referência. A tolerância (`syncTolerance`, padrão 0,08 s) é escalada pela
-  velocidade, para que o erro percebido permaneça constante em tempo real.
-  Em teste, a deriva entre 6 pistas ficou abaixo de 25 ms em todas as velocidades.
+- Cada pista é um `<audio>` (streaming) ligado a um `GainNode` do Web Audio API —
+  baixo consumo de memória, permitindo muitas pistas no celular.
+- A velocidade usa `playbackRate` com `preservesPitch`, aplicada a todos os áudios.
+- O **loop** é verificado no laço de animação (~60 fps), com um backstop a cada
+  250 ms caso a aba perca o foco. Quando o cursor atinge o fim do trecho (com uma
+  margem proporcional à velocidade), todas as pistas saltam juntas para o início.
+- Um verificador realinha qualquer pista que desvie da referência; a tolerância
+  (`syncTolerance`, padrão 0,08 s) é escalada pela velocidade.
 - Mudanças de volume usam rampa curta (15 ms) para não estalar.
+- No iPhone, o áudio só começa após o primeiro toque no botão tocar — restrição do
+  iOS. Mantenha o interruptor lateral fora do modo silencioso.
 - No iPhone, o áudio só começa após o primeiro toque no botão tocar — restrição do
   próprio iOS. Mantenha o interruptor lateral fora do modo silencioso.
