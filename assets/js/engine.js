@@ -1,8 +1,10 @@
 /* =============================================================
    BandTracks — Motor de reprodução multipista
-   Usa <audio> (streaming, baixo consumo de memória) roteado para
-   o Web Audio API, com um GainNode por faixa e correção de deriva.
-   Suporta velocidade variável com preservação de tom.
+   <audio> em streaming roteado para o Web Audio API, um GainNode
+   por faixa, correção de deriva, velocidade variável (tom preservado)
+   e LOOP de trecho.
+   Toda a lógica trabalha em "tempo de mídia" (currentTime dos áudios),
+   por isso o LOOP é independente da velocidade de reprodução.
    ============================================================= */
 (function (global) {
   "use strict";
@@ -10,15 +12,14 @@
   const CFG = global.BT_CONFIG || {};
   const TOL = CFG.syncTolerance || 0.08;
   const SPD = CFG.speed || {};
+  const LP  = CFG.loop || {};
+  const MIN_SPAN = typeof LP.minSpan === "number" ? LP.minSpan : 1.0;
 
-  /** Define preservação de tom cobrindo os prefixos de fornecedor. */
   function applyPreservesPitch(el, on) {
     if ("preservesPitch" in el) el.preservesPitch = on;
     if ("webkitPreservesPitch" in el) el.webkitPreservesPitch = on;
     if ("mozPreservesPitch" in el) el.mozPreservesPitch = on;
   }
-
-  /** O navegador suporta preservação de tom? */
   function supportsPreservesPitch() {
     const a = document.createElement("audio");
     return ("preservesPitch" in a) || ("webkitPreservesPitch" in a) ||
@@ -35,16 +36,25 @@
       this.masterVolume = 1;
       this.rate = 1;
       this.preservePitch = SPD.preservePitch !== false;
+
+      // ---- LOOP ----
+      this.loopEnabled = false;
+      this.loopStart = 0;
+      this.loopEnd = 0;          // 0 = ainda não definido; ao carregar vira a duração
+
       this._raf = null;
       this._syncTimer = null;
-      this.onTime = null;      // (cur, dur) => void
-      this.onState = null;     // (playing) => void
-      this.onLoad = null;      // (loaded, total) => void
-      this.onReady = null;     // () => void
-      this.onRate = null;      // (rate) => void
+      this._seekingBack = false; // trava reentrância do salto de loop
+
+      this.onTime = null;   // (cur, dur) => void
+      this.onState = null;  // (playing) => void
+      this.onLoad = null;   // (loaded, total) => void
+      this.onReady = null;  // () => void
+      this.onRate = null;   // (rate) => void
+      this.onLoop = null;   // (start, end, enabled) => void
     }
 
-    /* ---------- contexto de áudio (criado no 1º gesto do usuário) ---------- */
+    /* ---------- contexto de áudio ---------- */
     _ensureCtx() {
       if (!this.ctx) {
         const AC = global.AudioContext || global.webkitAudioContext;
@@ -66,6 +76,10 @@
       let loaded = 0;
       const self = this;
 
+      // reinicia o loop para os extremos ao trocar de música
+      this.loopStart = 0;
+      this.loopEnd = 0;
+
       this.tracks = song.tracks.map(function (t, i) {
         const el = new Audio();
         el.preload = "auto";
@@ -82,20 +96,17 @@
         gain.connect(self.master);
 
         const track = {
-          index: i,
-          name: t.name || ("Faixa " + (i + 1)),
-          el: el,
-          gain: gain,
+          index: i, name: t.name || ("Faixa " + (i + 1)),
+          el: el, gain: gain,
           volume: typeof t.volume === "number" ? t.volume : 0.85,
-          muted: false,
-          solo: false,
-          ready: false
+          muted: false, solo: false, ready: false
         };
         gain.gain.value = track.volume;
 
         el.addEventListener("loadedmetadata", function () {
           if (isFinite(el.duration) && el.duration > self.duration) {
             self.duration = el.duration;
+            if (self.loopEnd === 0) self.loopEnd = self.duration;
           }
         });
         const markReady = function () {
@@ -104,8 +115,10 @@
           loaded++;
           if (self.onLoad) self.onLoad(loaded, total);
           if (loaded === total) {
+            if (self.loopEnd === 0) self.loopEnd = self.duration;
             self._applyGains();
             self.setRate(self.rate);
+            if (self.onLoop) self.onLoop(self.loopStart, self.loopEnd, self.loopEnabled);
             if (self.onTime) self.onTime(0, self.duration);
             if (self.onReady) self.onReady();
           }
@@ -113,13 +126,11 @@
         el.addEventListener("canplaythrough", markReady);
         el.addEventListener("canplay", markReady);
         el.addEventListener("error", function () {
-          console.warn("Falha ao carregar faixa:", t.file);
-          markReady();
+          console.warn("Falha ao carregar faixa:", t.file); markReady();
         });
         el.addEventListener("ended", function () {
           if (self._allEnded()) self._handleEnd();
         });
-
         return track;
       });
 
@@ -139,44 +150,106 @@
     }
 
     /* ---------- velocidade ---------- */
-    /** Define a velocidade (multiplicador) em todas as faixas. */
     setRate(r) {
       const min = typeof SPD.min === "number" ? SPD.min : 0.25;
       const max = typeof SPD.max === "number" ? SPD.max : 1.0;
       this.rate = Math.max(min, Math.min(max, r));
       const self = this;
       this.tracks.forEach(function (t) {
-        try {
-          t.el.playbackRate = self.rate;
-          t.el.defaultPlaybackRate = self.rate;
-        } catch (e) {
-          console.warn("playbackRate não aceito:", e.message);
-        }
+        try { t.el.playbackRate = self.rate; t.el.defaultPlaybackRate = self.rate; }
+        catch (e) { console.warn("playbackRate não aceito:", e.message); }
       });
-      // realinha imediatamente: a troca de taxa pode desencontrar as faixas
       if (this.playing) this._align();
       if (this.onRate) this.onRate(this.rate);
       return this.rate;
     }
-
-    /** Liga/desliga a correção de tom (false = efeito de fita). */
     setPreservePitch(on) {
       this.preservePitch = !!on;
       const self = this;
       this.tracks.forEach(function (t) { applyPreservesPitch(t.el, self.preservePitch); });
       return this.preservePitch;
     }
-
     static get supportsPitchPreservation() { return supportsPreservesPitch(); }
 
-    /* ---------- estado de mudo/solo ---------- */
-    _anySolo() { return this.tracks.some(function (t) { return t.solo; }); }
+    /* ---------- LOOP ---------- */
+    setLoopEnabled(on) {
+      this.loopEnabled = !!on;
+      if (this.loopEnabled) {
+        // garante limites válidos
+        if (this.loopEnd <= 0) this.loopEnd = this.duration;
+        this._clampLoop();
+        // se estiver tocando fora do trecho, entra no início do trecho
+        const c = this.currentTime;
+        if (c < this.loopStart - 0.001 || c > this.loopEnd + 0.001) {
+          this.seek(this.loopStart);
+        }
+      }
+      if (this.onLoop) this.onLoop(this.loopStart, this.loopEnd, this.loopEnabled);
+      return this.loopEnabled;
+    }
 
+    /** Define os pontos do loop (em segundos de mídia). */
+    setLoop(start, end) {
+      const d = this.duration || 0;
+      let s = (start === null || start === undefined) ? this.loopStart : start;
+      let e = (end === null || end === undefined) ? this.loopEnd : end;
+      s = Math.max(0, Math.min(d, s));
+      e = Math.max(0, Math.min(d, e));
+      // mantém largura mínima empurrando o lado que NÃO foi movido
+      if (e - s < MIN_SPAN) {
+        if (start !== null && start !== undefined) s = Math.max(0, e - MIN_SPAN);
+        else e = Math.min(d, s + MIN_SPAN);
+        // se ainda inválido (música curta), ocupa tudo
+        if (e - s < MIN_SPAN) { s = 0; e = d; }
+      }
+      this.loopStart = s;
+      this.loopEnd = e;
+      if (this.onLoop) this.onLoop(this.loopStart, this.loopEnd, this.loopEnabled);
+      return { start: s, end: e };
+    }
+
+    resetLoop() {
+      this.loopStart = 0;
+      this.loopEnd = this.duration;
+      if (this.onLoop) this.onLoop(this.loopStart, this.loopEnd, this.loopEnabled);
+      return { start: this.loopStart, end: this.loopEnd };
+    }
+
+    getLoop() {
+      return { start: this.loopStart, end: this.loopEnd, enabled: this.loopEnabled };
+    }
+
+    _clampLoop() {
+      const d = this.duration || 0;
+      this.loopStart = Math.max(0, Math.min(d, this.loopStart));
+      this.loopEnd = Math.max(0, Math.min(d, this.loopEnd));
+      if (this.loopEnd - this.loopStart < MIN_SPAN) {
+        this.loopEnd = Math.min(d, this.loopStart + MIN_SPAN);
+        if (this.loopEnd - this.loopStart < MIN_SPAN) { this.loopStart = 0; this.loopEnd = d; }
+      }
+    }
+
+    /** Verifica a borda do loop e salta se necessário. Chamado a cada quadro. */
+    _checkLoop() {
+      if (!this.loopEnabled || !this.playing || this._seekingBack) return;
+      const c = this.currentTime;
+      // margem proporcional à velocidade: antecipa o salto o suficiente
+      const margin = Math.max(0.02, 0.05 * this.rate);
+      if (c >= this.loopEnd - margin) {
+        this._seekingBack = true;
+        this.seek(this.loopStart);
+        const self = this;
+        // pequena trava para não re-disparar no mesmo quadro
+        setTimeout(function () { self._seekingBack = false; }, 60);
+      }
+    }
+
+    /* ---------- mudo/solo ---------- */
+    _anySolo() { return this.tracks.some(function (t) { return t.solo; }); }
     isAudible(t) {
       const solo = this._anySolo();
       return solo ? (t.solo && !t.muted) : !t.muted;
     }
-
     _applyGains() {
       const self = this;
       const now = this.ctx ? this.ctx.currentTime : 0;
@@ -184,43 +257,20 @@
         const target = self.isAudible(t) ? t.volume : 0;
         if (self.ctx) {
           t.gain.gain.cancelScheduledValues(now);
-          t.gain.gain.setTargetAtTime(target, now, 0.015); // rampa curta: evita clique
-        } else {
-          t.gain.gain.value = target;
-        }
+          t.gain.gain.setTargetAtTime(target, now, 0.015);
+        } else { t.gain.gain.value = target; }
       });
     }
-
-    setVolume(i, v) {
-      const t = this.tracks[i]; if (!t) return;
-      t.volume = Math.max(0, Math.min(1, v));
-      this._applyGains();
-    }
-    toggleMute(i) {
-      const t = this.tracks[i]; if (!t) return;
-      t.muted = !t.muted; this._applyGains(); return t.muted;
-    }
-    toggleSolo(i) {
-      const t = this.tracks[i]; if (!t) return;
-      t.solo = !t.solo; this._applyGains(); return t.solo;
-    }
-    clearSoloMute() {
-      this.tracks.forEach(function (t) { t.muted = false; t.solo = false; });
-      this._applyGains();
-    }
-    setMasterVolume(v) {
-      this.masterVolume = Math.max(0, Math.min(1, v));
-      if (this.master) this.master.gain.value = this.masterVolume;
-    }
+    setVolume(i, v) { const t = this.tracks[i]; if (!t) return; t.volume = Math.max(0, Math.min(1, v)); this._applyGains(); }
+    toggleMute(i) { const t = this.tracks[i]; if (!t) return; t.muted = !t.muted; this._applyGains(); return t.muted; }
+    toggleSolo(i) { const t = this.tracks[i]; if (!t) return; t.solo = !t.solo; this._applyGains(); return t.solo; }
+    clearSoloMute() { this.tracks.forEach(function (t) { t.muted = false; t.solo = false; }); this._applyGains(); }
+    setMasterVolume(v) { this.masterVolume = Math.max(0, Math.min(1, v)); if (this.master) this.master.gain.value = this.masterVolume; }
 
     /* ---------- transporte ---------- */
-    get currentTime() {
-      const ref = this._reference();
-      return ref ? ref.el.currentTime : 0;
-    }
+    get currentTime() { const ref = this._reference(); return ref ? ref.el.currentTime : 0; }
 
     _reference() {
-      // faixa mais longa = relógio mestre
       let ref = null, max = -1;
       this.tracks.forEach(function (t) {
         const d = isFinite(t.el.duration) ? t.el.duration : 0;
@@ -228,15 +278,11 @@
       });
       return ref;
     }
-
     _allEnded() {
       return this.tracks.every(function (t) {
         return t.el.ended || t.el.currentTime >= t.el.duration - 0.05;
       });
     }
-
-    /** Tolerância efetiva: escalada pela velocidade, para que o erro
-        percebido pelo ouvinte permaneça constante em tempo real. */
     _tolerance() { return Math.max(0.02, TOL * this.rate); }
 
     _align() {
@@ -254,11 +300,16 @@
     play() {
       if (!this.tracks.length) return;
       this._ensureCtx();
+      // se o loop está ligado e o cursor está fora do trecho, começa no início dele
+      if (this.loopEnabled) {
+        const c = this.currentTime;
+        if (c < this.loopStart - 0.001 || c >= this.loopEnd - 0.001) this.seek(this.loopStart);
+      }
       const t0 = this.currentTime;
       const self = this;
       this.tracks.forEach(function (t) {
         if (Math.abs(t.el.currentTime - t0) > self._tolerance()) t.el.currentTime = t0;
-        t.el.playbackRate = self.rate;   // reafirma: alguns navegadores reiniciam a taxa
+        t.el.playbackRate = self.rate;
       });
       const promises = this.tracks.map(function (t) {
         const p = t.el.play();
@@ -278,7 +329,6 @@
       this._stopLoops();
       if (this.onState) this.onState(false);
     }
-
     toggle() { this.playing ? this.pause() : this.play(); }
 
     seek(sec) {
@@ -288,46 +338,52 @@
       });
       if (this.onTime) this.onTime(s, this.duration);
     }
-
-    stop() { this.pause(); this.seek(0); }
+    stop() { this.pause(); this.seek(this.loopEnabled ? this.loopStart : 0); }
 
     _handleEnd() {
-      this.pause();
-      this.seek(0);
+      // fim natural do arquivo: se o loop está ligado, recomeça no início do trecho
+      if (this.loopEnabled) { this.seek(this.loopStart); if (this.playing) this.play(); return; }
+      this.pause(); this.seek(0);
     }
 
-    /* ---------- laços de UI e de sincronismo ---------- */
+    /* ---------- laços ---------- */
     _startLoops() {
       const self = this;
       this._stopLoops();
-
       const tick = function () {
+        self._checkLoop();                       // borda do loop (responsivo, ~60fps)
         if (self.onTime) self.onTime(self.currentTime, self.duration);
         self._raf = global.requestAnimationFrame(tick);
       };
       this._raf = global.requestAnimationFrame(tick);
-
-      // correção de deriva entre as faixas
       this._syncTimer = global.setInterval(function () {
         if (!self.playing) return;
         self._align();
-      }, 500);
+        self._checkLoop();                       // backstop caso a aba perca foco
+      }, 250);
     }
-
     _stopLoops() {
       if (this._raf) { global.cancelAnimationFrame(this._raf); this._raf = null; }
       if (this._syncTimer) { global.clearInterval(this._syncTimer); this._syncTimer = null; }
     }
   }
 
-  /* ---------- utilitário de tempo ---------- */
   function fmtTime(s) {
     if (!isFinite(s) || s < 0) s = 0;
     const m = Math.floor(s / 60);
     const r = Math.floor(s % 60);
     return m + ":" + String(r).padStart(2, "0");
   }
+  function fmtTimeMs(s) {
+    if (!isFinite(s) || s < 0) s = 0;
+    const m = Math.floor(s / 60);
+    const r = (s % 60);
+    const whole = Math.floor(r);
+    const dec = Math.floor((r - whole) * 10);
+    return m + ":" + String(whole).padStart(2, "0") + "." + dec;
+  }
 
   global.MultitrackEngine = MultitrackEngine;
   global.fmtTime = fmtTime;
+  global.fmtTimeMs = fmtTimeMs;
 })(window);
