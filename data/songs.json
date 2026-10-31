@@ -44,6 +44,50 @@
           "volume": 0.85
         }
       ]
+    },
+    {
+      "id": "man-in-the-box-mvwwojo1",
+      "title": "Man in the Box",
+      "artist": "Alice in Chains",
+      "notes": "109 bpm, Ebm",
+      "createdAt": "2026-10-31T21:21:49.882Z",
+      "tracks": [
+        {
+          "name": "Metronomo",
+          "file": "audio/man-in-the-box/01-metronomo.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Baixo",
+          "file": "audio/man-in-the-box/02-baixo.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Bateria",
+          "file": "audio/man-in-the-box/03-bateria.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Guitarra",
+          "file": "audio/man-in-the-box/04-guitarra.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Voz Principal",
+          "file": "audio/man-in-the-box/05-voz-principal.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Backing vocal",
+          "file": "audio/man-in-the-box/06-backing-vocal.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Outro",
+          "file": "audio/man-in-the-box/07-outro.mp3",
+          "volume": 0.85
+        }
+      ]
     }
   ]
 }
