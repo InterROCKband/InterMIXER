@@ -90,45 +90,45 @@
       ]
     },
     {
-      "id": "take-me-out-mvwwydcy",
-      "title": "Take me Out",
-      "artist": "Franz Fredinand",
-      "notes": "105 bpm, Em",
-      "createdAt": "2026-10-31T21:29:25.850Z",
+      "id": "are-you-gonna-be-my-girl-mvwx4ll3",
+      "title": "Are you gonna be my girl",
+      "artist": "Jet",
+      "notes": "70 bpm, A",
+      "createdAt": "2026-10-31T21:34:15.290Z",
       "tracks": [
         {
           "name": "Metronomo",
-          "file": "audio/take-me-out/01-metronomo.mp3",
+          "file": "audio/are-you-gonna-be-my-girl/01-metronomo.mp3",
           "volume": 0.85
         },
         {
           "name": "Baixo",
-          "file": "audio/take-me-out/02-baixo.mp3",
+          "file": "audio/are-you-gonna-be-my-girl/02-baixo.mp3",
           "volume": 0.85
         },
         {
           "name": "Bateria",
-          "file": "audio/take-me-out/03-bateria.mp3",
+          "file": "audio/are-you-gonna-be-my-girl/03-bateria.mp3",
           "volume": 0.85
         },
         {
           "name": "Guitarra Solo",
-          "file": "audio/take-me-out/04-guitarra-solo.mp3",
+          "file": "audio/are-you-gonna-be-my-girl/04-guitarra-solo.mp3",
           "volume": 0.85
         },
         {
           "name": "Guitarra Base",
-          "file": "audio/take-me-out/05-guitarra-base.mp3",
+          "file": "audio/are-you-gonna-be-my-girl/05-guitarra-base.mp3",
           "volume": 0.85
         },
         {
           "name": "Vocais",
-          "file": "audio/take-me-out/06-vocais.mp3",
+          "file": "audio/are-you-gonna-be-my-girl/06-vocais.mp3",
           "volume": 0.85
         },
         {
           "name": "Outro",
-          "file": "audio/take-me-out/07-outro.mp3",
+          "file": "audio/are-you-gonna-be-my-girl/07-outro.mp3",
           "volume": 0.85
         }
       ]
