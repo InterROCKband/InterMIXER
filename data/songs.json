@@ -55,7 +55,7 @@
         {
           "name": "Metronomo",
           "file": "audio/man-in-the-box/01-metronomo.mp3",
-          "volume": 0.85
+          "volume": 0.25
         },
         {
           "name": "Baixo",
@@ -99,7 +99,7 @@
         {
           "name": "Metronomo",
           "file": "audio/are-you-gonna-be-my-girl/01-metronomo.mp3",
-          "volume": 0.85
+          "volume": 0.25
         },
         {
           "name": "Baixo",
@@ -143,7 +143,7 @@
         {
           "name": "Metronomo",
           "file": "audio/animal/01-metronomo.mp3",
-          "volume": 0.85
+          "volume": 0.25
         },
         {
           "name": "Baixo",
@@ -182,7 +182,7 @@
         {
           "name": "Metronomo",
           "file": "audio/jeremy/01-metronomo.mp3",
-          "volume": 0.85
+          "volume": 0.25
         },
         {
           "name": "Baixo",
@@ -226,7 +226,7 @@
         {
           "name": "Metronomo",
           "file": "audio/creep/01-metronomo.mp3",
-          "volume": 0.85
+          "volume": 0.25
         },
         {
           "name": "Baixo",
@@ -270,7 +270,7 @@
         {
           "name": "Metronomo",
           "file": "audio/californication/01-metronomo.mp3",
-          "volume": 0.85
+          "volume": 0.25
         },
         {
           "name": "Baixo",
@@ -314,7 +314,7 @@
         {
           "name": "Metronomo",
           "file": "audio/dani-california/01-metronomo.mp3",
-          "volume": 0.85
+          "volume": 0.25
         },
         {
           "name": "Baixo",
@@ -358,7 +358,7 @@
         {
           "name": "Metronomo",
           "file": "audio/tomorrow/01-metronomo.mp3",
-          "volume": 0.85
+          "volume": 0.25
         },
         {
           "name": "Baixo",
@@ -402,7 +402,7 @@
         {
           "name": "Metronomo",
           "file": "audio/plush/01-metronomo.mp3",
-          "volume": 0.85
+          "volume": 0.25
         },
         {
           "name": "Baixo",
@@ -441,7 +441,7 @@
         {
           "name": "Metronomo",
           "file": "audio/i-believe-in-a-thing-called-love/01-metronomo.mp3",
-          "volume": 0.85
+          "volume": 0.25
         },
         {
           "name": "Baixo",
@@ -485,7 +485,7 @@
         {
           "name": "Metronomo",
           "file": "audio/live-forever/01-metronomo.mp3",
-          "volume": 0.85
+          "volume": 0.25
         },
         {
           "name": "Baixo",
@@ -529,7 +529,7 @@
         {
           "name": "Metronomo",
           "file": "audio/don-t-look-back-in-anger/01-metronomo.mp3",
-          "volume": 0.85
+          "volume": 0.25
         },
         {
           "name": "Baixo",
@@ -573,7 +573,7 @@
         {
           "name": "Metronomo",
           "file": "audio/summer-of-69/01-metronomo.mp3",
-          "volume": 0.85
+          "volume": 0.25
         },
         {
           "name": "Baixo",
@@ -617,7 +617,7 @@
         {
           "name": "Metronomo",
           "file": "audio/when-i-come-around/01-metronomo.mp3",
-          "volume": 0.85
+          "volume": 0.25
         },
         {
           "name": "Baixo",
