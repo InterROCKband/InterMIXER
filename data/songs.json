@@ -474,6 +474,50 @@
           "volume": 0.85
         }
       ]
+    },
+    {
+      "id": "live-forever-mvx97yb2",
+      "title": "Live Forever",
+      "artist": "Oasis",
+      "notes": "91 bpm, G",
+      "createdAt": "2026-11-01T03:12:51.516Z",
+      "tracks": [
+        {
+          "name": "Metronomo",
+          "file": "audio/live-forever/01-metronomo.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Baixo",
+          "file": "audio/live-forever/02-baixo.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Bateria",
+          "file": "audio/live-forever/03-bateria.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Guitarra Solo",
+          "file": "audio/live-forever/04-guitarra-solo.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Guitarra Base",
+          "file": "audio/live-forever/05-guitarra-base.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Vocal",
+          "file": "audio/live-forever/06-vocal.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Outro",
+          "file": "audio/live-forever/07-outro.mp3",
+          "volume": 0.85
+        }
+      ]
     }
   ]
 }
