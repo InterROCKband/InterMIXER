@@ -259,6 +259,50 @@
           "volume": 0.85
         }
       ]
+    },
+    {
+      "id": "californication-mvx7mwd7",
+      "title": "Californication",
+      "artist": "R.H.C.P.",
+      "notes": "97 bpm, Am",
+      "createdAt": "2026-11-01T02:28:32.418Z",
+      "tracks": [
+        {
+          "name": "Metronomo",
+          "file": "audio/californication/01-metronomo.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Baixo",
+          "file": "audio/californication/02-baixo.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Bateria",
+          "file": "audio/californication/03-bateria.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Guitarra",
+          "file": "audio/californication/04-guitarra.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Voz principal",
+          "file": "audio/californication/05-voz-principal.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Backing vocal",
+          "file": "audio/californication/06-backing-vocal.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Outro",
+          "file": "audio/californication/07-outro.mp3",
+          "volume": 0.85
+        }
+      ]
     }
   ]
 }
