@@ -132,6 +132,45 @@
           "volume": 0.85
         }
       ]
+    },
+    {
+      "id": "animal-mvx6ph5g",
+      "title": "Animal",
+      "artist": "Pearl Jam",
+      "notes": "106 bpm, A",
+      "createdAt": "2026-11-01T02:02:22.185Z",
+      "tracks": [
+        {
+          "name": "Metronomo",
+          "file": "audio/animal/01-metronomo.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Baixo",
+          "file": "audio/animal/02-baixo.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Bateria",
+          "file": "audio/animal/03-bateria.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Guitarra",
+          "file": "audio/animal/04-guitarra.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Vocal",
+          "file": "audio/animal/05-vocal.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Outro",
+          "file": "audio/animal/06-outro.mp3",
+          "volume": 0.85
+        }
+      ]
     }
   ]
 }
