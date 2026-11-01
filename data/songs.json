@@ -430,6 +430,50 @@
           "volume": 0.85
         }
       ]
+    },
+    {
+      "id": "i-believe-in-a-thing-called-love-mvx8x7o0",
+      "title": "I Believe in a Thing Called Love",
+      "artist": "The Darkness",
+      "notes": "128 bpm, E",
+      "createdAt": "2026-11-01T03:04:24.078Z",
+      "tracks": [
+        {
+          "name": "Metronomo",
+          "file": "audio/i-believe-in-a-thing-called-love/01-metronomo.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Baixo",
+          "file": "audio/i-believe-in-a-thing-called-love/02-baixo.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Bateria",
+          "file": "audio/i-believe-in-a-thing-called-love/03-bateria.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Guitarra",
+          "file": "audio/i-believe-in-a-thing-called-love/04-guitarra.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Voz principal",
+          "file": "audio/i-believe-in-a-thing-called-love/05-voz-principal.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Backing vocal",
+          "file": "audio/i-believe-in-a-thing-called-love/06-backing-vocal.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Outro",
+          "file": "audio/i-believe-in-a-thing-called-love/07-outro.mp3",
+          "volume": 0.85
+        }
+      ]
     }
   ]
 }
