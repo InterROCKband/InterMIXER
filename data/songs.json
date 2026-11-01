@@ -303,6 +303,50 @@
           "volume": 0.85
         }
       ]
+    },
+    {
+      "id": "dani-california-mvx7wnjl",
+      "title": "Dani California",
+      "artist": "R.H.C.P.",
+      "notes": "96 bpm, Am",
+      "createdAt": "2026-11-01T02:36:06.905Z",
+      "tracks": [
+        {
+          "name": "Metronomo",
+          "file": "audio/dani-california/01-metronomo.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Baixo",
+          "file": "audio/dani-california/02-baixo.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Bateria",
+          "file": "audio/dani-california/03-bateria.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Guitarra",
+          "file": "audio/dani-california/04-guitarra.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Voz principal",
+          "file": "audio/dani-california/05-voz-principal.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Backing vocal",
+          "file": "audio/dani-california/06-backing-vocal.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Outro",
+          "file": "audio/dani-california/07-outro.mp3",
+          "volume": 0.85
+        }
+      ]
     }
   ]
 }
