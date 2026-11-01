@@ -391,6 +391,45 @@
           "volume": 0.85
         }
       ]
+    },
+    {
+      "id": "plush-mvx8kq8w",
+      "title": "Plush",
+      "artist": "Stone Temple Pilots",
+      "notes": "72 bpm, G",
+      "createdAt": "2026-11-01T02:54:44.839Z",
+      "tracks": [
+        {
+          "name": "Metronomo",
+          "file": "audio/plush/01-metronomo.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Baixo",
+          "file": "audio/plush/02-baixo.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Bateria",
+          "file": "audio/plush/03-bateria.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Guitarra",
+          "file": "audio/plush/04-guitarra.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Vocal",
+          "file": "audio/plush/05-vocal.mp3",
+          "volume": 0.85
+        },
+        {
+          "name": "Outro",
+          "file": "audio/plush/06-outro.mp3",
+          "volume": 0.85
+        }
+      ]
     }
   ]
 }
